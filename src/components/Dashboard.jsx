@@ -1,9 +1,7 @@
-// Dashboard.jsx - satu file lengkap untuk semua komponen halaman dashboard
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import '../styles/style.css';
 
-// SIMULASI SERVICE - nanti tinggal ganti panggilan ke backend
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function verifyUrl(url) {

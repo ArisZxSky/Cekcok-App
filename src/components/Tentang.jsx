@@ -1,4 +1,3 @@
-// components/Tentang.jsx
 import { NavLink } from 'react-router-dom';
 import '../styles/style.css';
 

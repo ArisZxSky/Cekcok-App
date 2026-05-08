@@ -1,4 +1,3 @@
-// App.jsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard.jsx';
 import Riwayat from './components/Riwayat.jsx';
