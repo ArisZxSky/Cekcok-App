@@ -14,12 +14,13 @@ function Navbar() {
           <NavLink to="/tentang" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>TENTANG PROJEK</NavLink>
         </div>
         <div className="github-badge">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer">GITHUB</a>
+          <a href="https://github.com/CekCok-Capstonus" target="_blank" rel="noopener noreferrer">GITHUB</a>
         </div>
       </div>
     </nav>
   );
 }
+
 
 function Footer() {
   return (

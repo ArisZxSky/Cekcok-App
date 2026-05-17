@@ -1,61 +1,9 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import '../styles/style.css';
+import { verifyTextApi, verifyUrlApi, pollCheckResult, formatVerdict } from '../api/cekcokApi.js';
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-async function verifyUrl(url) {
-  await delay(1500);
-  if (!url) throw new Error('URL tidak boleh kosong');
-  
-  const mockResponses = {
-    'bukan-hoax.icu': {
-      success: true,
-      confidence: 95,
-      verdict: 'INDIKASI HOAKS',
-      reason: 'Sumber domain terdeteksi memiliki pola serupa dengan situs penyebar hoaks yang pernah tercatat dalam dataset kami.'
-    },
-    'default': {
-      success: true,
-      confidence: 78,
-      verdict: 'PERLU VERIFIKASI LANJUT',
-      reason: 'Sumber belum terdaftar dalam database kredibilitas kami. Disarankan untuk cross-check ke portal berita resmi.'
-    }
-  };
-  
-  for (const [domain, resp] of Object.entries(mockResponses)) {
-    if (url.includes(domain)) return resp;
-  }
-  return mockResponses.default;
-}
-
-async function verifyText(title, content) {
-  await delay(1500);
-  if (!content) throw new Error('Isi berita tidak boleh kosong');
-  
-  const hoaxKeywords = ['vaksin', 'mpox', 'verocell', 'utang', 'triliun', 'phishing'];
-  const hasHoaxIndicator = hoaxKeywords.some(keyword => 
-    content.toLowerCase().includes(keyword) || title?.toLowerCase().includes(keyword)
-  );
-  
-  if (hasHoaxIndicator) {
-    return {
-      success: true,
-      confidence: 96,
-      verdict: 'INDIKASI HOAKS',
-      reason: 'Konten mengandung klaim yang tidak terverifikasi dan pola bahasa yang umum ditemukan pada misinformasi.'
-    };
-  }
-  
-  return {
-    success: true,
-    confidence: 85,
-    verdict: 'INFORMASI KREDIBEL',
-    reason: 'Konten tidak menunjukkan pola bahasa yang mencurigakan dan konsisten dengan format berita faktual.'
-  };
-}
-
-// KOMPONEN NAVBAR
+// KOMPONEN NAVBAR (sama seperti sebelumnya)
 function Navbar() {
   return (
     <nav className="navbar">
@@ -69,14 +17,14 @@ function Navbar() {
           <NavLink to="/tentang" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>TENTANG PROJEK</NavLink>
         </div>
         <div className="github-badge">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer">GITHUB</a>
+          <a href="https://github.com/CekCok-Capstonus" target="_blank" rel="noopener noreferrer">GITHUB</a>
         </div>
       </div>
     </nav>
   );
 }
 
-// KOMPONEN LAPORAN TERBARU
+// KOMPONEN LAPORAN TERBARU (sementara masih dummy, nanti bisa diintegrasikan juga)
 function LaporanTerbaru() {
   const laporanData = [
     { confidence: 98, type: 'INPUT TEKS', content: '"Vaksin COVID-19 Memicu Mpox Karena Kandungan Virus Verocell."', time: '5m', verdict: 'HOAKS' },
@@ -105,7 +53,7 @@ function LaporanTerbaru() {
   );
 }
 
-// KOMPONEN METODOLOGI
+// KOMPONEN METODOLOGI (sama)
 function Metodologi() {
   const steps = [
     { num: '01', title: 'Pengumpulan Data', desc: 'Kami mengambil data dari url atau uplikan yang Anda masukkan lalu menyiapkannya untuk dianalisis lebih dalam.' },
@@ -134,7 +82,7 @@ function Metodologi() {
   );
 }
 
-// KOMPONEN MANIFESTO
+// KOMPONEN MANIFESTO (sama)
 function Manifesto() {
   return (
     <section className="manifesto-section">
@@ -151,7 +99,7 @@ function Manifesto() {
   );
 }
 
-// KOMPONEN FAQ
+// KOMPONEN FAQ (sama)
 function FAQ() {
   const faqs = [
     { q: "CekCok ini sebenarnya aplikasi apa sih?", a: "Singkatnya, ini asisten digital buat bantu kamu ngecek apakah sebuah teks berita atau artikel itu punya indikasi hoaks atau fakta. Biar kamu nggak buru-buru emosi terus nge-share info yang salah." },
@@ -177,14 +125,14 @@ function FAQ() {
   );
 }
 
-// KOMPONEN FOOTER
+// KOMPONEN FOOTER (sama)
 function Footer() {
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-tagline">
           <h3>CEKCOK.</h3>
-          <p>"Cek dulu supaya cocok. Membangun ketahanan masyarakat terhadap misinformasi digital."</p>
+          <p>"Cek dulu supaya cocok. Membangun ketahanan masyarakat terhadap miss informasi digital."</p>
         </div>
         <div className="footer-about">
           <h4>TENTANG KAMI</h4>
@@ -195,7 +143,7 @@ function Footer() {
   );
 }
 
-// MAIN DASHBOARD COMPONENT
+// MAIN DASHBOARD COMPONENT (DIUBAH)
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('tautan');
   const [urlInput, setUrlInput] = useState('');
@@ -203,17 +151,56 @@ export default function Dashboard() {
   const [isiBerita, setIsiBerita] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleVerify = async () => {
     setIsLoading(true);
     setResult(null);
+    setError(null);
+    
     try {
-      let response;
-      if (activeTab === 'tautan') response = await verifyUrl(urlInput);
-      else response = await verifyText(judulBerita, isiBerita);
-      setResult(response);
-    } catch (error) {
-      setResult({ success: false, message: error.message });
+      let initialResponse;
+      
+      if (activeTab === 'tautan') {
+        // Validasi URL tidak boleh kosong
+        if (!urlInput) {
+          throw new Error('URL tidak boleh kosong');
+        }
+        initialResponse = await verifyUrlApi(urlInput);
+      } else {
+        // Validasi isi berita tidak boleh kosong
+        if (!isiBerita) {
+          throw new Error('Isi berita tidak boleh kosong');
+        }
+        initialResponse = await verifyTextApi(judulBerita, isiBerita);
+      }
+      
+      // Ambil ID dari response
+      const checkId = initialResponse.data.id;
+      
+      // Polling sampai hasil selesai
+      const finalCheck = await pollCheckResult(checkId);
+      
+      // Cek apakah status success atau fail
+      if (finalCheck.status === 'fail') {
+        throw new Error(finalCheck.error_message || 'Verifikasi gagal. Silakan coba lagi.');
+      }
+      
+      // Format hasil dari backend
+      const { verdict, confidence } = formatVerdict(finalCheck.label, finalCheck.confidence_score);
+      
+      setResult({
+        success: true,
+        confidence: confidence,
+        verdict: verdict,
+        reason: finalCheck.explanation || (verdict === 'INDIKASI HOAKS' 
+          ? 'Konten terdeteksi memiliki indikasi hoaks berdasarkan analisis AI.' 
+          : 'Konten terverifikasi sebagai informasi yang kredibel.'),
+      });
+      
+    } catch (err) {
+      setError(err.message);
+      setResult({ success: false, message: err.message });
     } finally {
       setIsLoading(false);
     }
@@ -225,7 +212,7 @@ export default function Dashboard() {
       <main className="main-content">
         {/* HERO */}
         <section className="hero">
-          <h1 className="hero-title">Lawan Misinformasi <span className="highlight">Dengan Presisi.</span></h1>
+          <h1 className="hero-title">Lawan Miss Informasi <span className="highlight">Dengan Presisi.</span></h1>
           <p className="hero-subtitle">CekCok menggunakan mesin inferensi AI untuk memverifikasi klaim di tengah ketidakpastian informasi digital.</p>
         </section>
 
@@ -255,17 +242,32 @@ export default function Dashboard() {
                 </div>
               </>
             )}
-            <button className="verify-btn" onClick={handleVerify} disabled={isLoading}>{isLoading ? 'Memverifikasi...' : 'Mulai Verifikasi'}</button>
-            {result && (
+            <button className="verify-btn" onClick={handleVerify} disabled={isLoading}>
+              {isLoading ? 'Memverifikasi...' : 'Mulai Verifikasi'}
+            </button>
+            
+            {error && (
+              <div className="result-card error">
+                <h4>Terjadi Kesalahan</h4>
+                <p className="error-message">{error}</p>
+              </div>
+            )}
+            
+            {result && !error && (
               <div className={`result-card ${result.success ? 'success' : 'error'}`}>
                 <h4>Hasil Verifikasi</h4>
                 {result.confidence ? (
                   <>
                     <div className="confidence-badge">{result.confidence}% CONFIDENCE</div>
                     <p className="result-verdict">{result.verdict}</p>
-                    <p className="result-reason">{result.reason}</p>
+                    <div 
+                      className="result-reason"
+                      dangerouslySetInnerHTML={{ __html: result.reason }}
+                    />
                   </>
-                ) : (<p className="error-message">{result.message}</p>)}
+                ) : (
+                  <p className="error-message">{result.message}</p>
+                )}
               </div>
             )}
           </div>
