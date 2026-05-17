@@ -10,7 +10,7 @@ body {
   color: #1e293b;
 }
 
-/* ========== NAVBAR ========== */
+/* NAVBAR */
 .navbar {
   background: white;
   border-bottom: 1px solid #e2e8f0;
@@ -57,14 +57,14 @@ body {
   color: #3b82f6;
 }
 
-/* ========== MAIN CONTENT ========== */
+/* MAIN CONTENT */
 .main-content {
   width: 100%;
   max-width: none;
   padding: 0;
 }
 
-/* ========== HERO SECTION (Dashboard) ========== */
+/* HERO SECTION (Dashboard) */
 .hero {
   background-color: #f5f7fb;
   text-align: center;
@@ -92,7 +92,7 @@ body {
   line-height: 1.6;
 }
 
-/* ========== VERIFICATION SECTION (Dashboard) ========== */
+/* VERIFICATION SECTION (Dashboard) */
 .verification-section {
   background: white;
   max-width: 900px;
@@ -247,7 +247,7 @@ body {
   font-size: 0.85rem;
 }
 
-/* ========== LAPORAN TERBARU (Dashboard) ========== */
+/* LAPORAN TERBARU (Dashboard) */
 .laporan-section {
   background: #f5f7fb;
   padding: 3rem 2rem;
@@ -347,7 +347,7 @@ body {
   color: #2563eb;
 }
 
-/* ========== METODOLOGI (Dashboard) ========== */
+/* METODOLOGI (Dashboard) */
 .metodologi-section {
   background: white;
   padding: 3rem 2rem;
@@ -422,7 +422,7 @@ body {
   margin-top: 0.25rem;
 }
 
-/* ========== MANIFESTO (Dashboard) ========== */
+/* MANIFESTO (Dashboard) */
 .manifesto-section {
   background: #0f172a;
   padding: 3rem 2rem;
@@ -459,7 +459,7 @@ body {
   max-width: 800px;
 }
 
-/* ========== FAQ SECTION (Dashboard) ========== */
+/* FAQ SECTION (Dashboard) */
 .faq-section {
   background: white;
   padding: 3rem 2rem;
@@ -513,7 +513,7 @@ body {
   font-style: italic;
 }
 
-/* ========== RIWAYAT PAGE ========== */
+/* RIWAYAT PAGE */
 .riwayat-main {
   width: 100%;
   max-width: 1400px;
@@ -759,7 +759,7 @@ body {
   color: #94a3b8;
 }
 
-/* ========== FOOTER ========== */
+/* FOOTER */
 .footer {
   background: #1e293b;
   color: white;
@@ -800,7 +800,7 @@ body {
   color: #94a3b8;
 }
 
-/* ========== RESPONSIVE ========== */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   /* NAVBAR */
   .nav-container {
@@ -1005,7 +1005,7 @@ body {
   }
 }
 
-/* ========== TENTANG PAGE ========== */
+/* TENTANG PAGE */
 .tentang-main {
   width: 100%;
   max-width: 1400px;
@@ -1306,9 +1306,7 @@ body {
   }
 }
 
-/* ============================================
-   RIWAYAT PAGE - ADDITIONAL STYLES
-   ============================================ */
+ /* RIWAYAT PAGE - ADDITIONAL STYLES */
 
 /* Loading State */
 .loading-state {
@@ -1350,7 +1348,7 @@ body {
   background: #dc2626;
 }
 
-/* Status Proses (belum selesai) */
+/* Status Proses */
 .jenis-proses {
   background: #f59e0b;
   color: white;
@@ -1366,9 +1364,7 @@ body {
   color: #374151;
 }
 
-/* ============================================
-   PAGINATION STYLES
-   ============================================ */
+ /* PAGINATION STYLES */
 
 .pagination-container {
   margin-top: 2rem;
@@ -1451,9 +1447,7 @@ body {
   color: #6b7280;
 }
 
-/* ============================================
-   RESPONSIVE PAGINATION
-   ============================================ */
+ /* RESPONSIVE PAGINATION */
 
 @media (max-width: 768px) {
   .pagination {
@@ -1477,9 +1471,8 @@ body {
   }
 }
 
-/* ============================================
-   DASHBOARD - RESULT CARD ERROR STYLE
-   ============================================ */
+
+ /* DASHBOARD - RESULT CARD ERROR STYLE */
 
 .result-card.error {
   border-left: 4px solid #ef4444;
@@ -1495,9 +1488,9 @@ body {
   margin-top: 0.5rem;
 }
 
-/* ============================================
-   RIWAYAT CARD - CONTENT PREVIEW
-   ============================================ */
+
+ /* RIWAYAT CARD - CONTENT PREVIEW */
+
 
 .riwayat-card .konten {
   font-size: 0.95rem;
@@ -1507,9 +1500,9 @@ body {
   margin-bottom: 0;
 }
 
-/* ============================================
-   NO RESULTS STYLES
-   ============================================ */
+
+  /* NO RESULTS STYLES */
+
 
 .no-results {
   text-align: center;
@@ -1520,9 +1513,9 @@ body {
   font-size: 0.95rem;
 }
 
-/* ============================================
-   TENTANG PAGE STYLES (if not exist)
-   ============================================ */
+
+   /* TENTANG PAGE STYLES */
+
 
 .tentang-page {
   min-height: 100vh;
@@ -1713,9 +1706,9 @@ body {
   color: #1f2937;
 }
 
-/* ============================================
-   MODAL / POPUP STYLES - UPDATED
-   ============================================ */
+
+/* MODAL */
+
 
 .modal-overlay {
   position: fixed;
@@ -1866,7 +1859,7 @@ body {
   line-height: 1.7;
 }
 
-/* Isi Berita - Tanpa batasan tinggi, full width */
+/* Isi Berita  */
 .modal-content-full {
   background: #f9fafb;
   padding: 1.25rem;
@@ -1877,7 +1870,7 @@ body {
   border: 1px solid #e5e7eb;
 }
 
-/* Penjelasan AI - Tanpa batasan tinggi, full width */
+/* Penjelasan AI  */
 .modal-explanation {
   background: #f0fdf4;
   padding: 1.25rem;

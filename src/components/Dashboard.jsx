@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import '../styles/style.css';
 import { verifyTextApi, verifyUrlApi, pollCheckResult, formatVerdict } from '../api/cekcokApi.js';
 
-// KOMPONEN NAVBAR (sama seperti sebelumnya)
+// KOMPONEN NAVBAR
 function Navbar() {
   return (
     <nav className="navbar">
@@ -24,7 +24,7 @@ function Navbar() {
   );
 }
 
-// KOMPONEN LAPORAN TERBARU (sementara masih dummy, nanti bisa diintegrasikan juga)
+// KOMPONEN LAPORAN TERBARU
 function LaporanTerbaru() {
   const laporanData = [
     { confidence: 98, type: 'INPUT TEKS', content: '"Vaksin COVID-19 Memicu Mpox Karena Kandungan Virus Verocell."', time: '5m', verdict: 'HOAKS' },
@@ -53,7 +53,7 @@ function LaporanTerbaru() {
   );
 }
 
-// KOMPONEN METODOLOGI (sama)
+// KOMPONEN METODOLOGI
 function Metodologi() {
   const steps = [
     { num: '01', title: 'Pengumpulan Data', desc: 'Kami mengambil data dari url atau uplikan yang Anda masukkan lalu menyiapkannya untuk dianalisis lebih dalam.' },
@@ -82,7 +82,7 @@ function Metodologi() {
   );
 }
 
-// KOMPONEN MANIFESTO (sama)
+// KOMPONEN MANIFESTO
 function Manifesto() {
   return (
     <section className="manifesto-section">
@@ -99,7 +99,7 @@ function Manifesto() {
   );
 }
 
-// KOMPONEN FAQ (sama)
+// KOMPONEN FAQ
 function FAQ() {
   const faqs = [
     { q: "CekCok ini sebenarnya aplikasi apa sih?", a: "Singkatnya, ini asisten digital buat bantu kamu ngecek apakah sebuah teks berita atau artikel itu punya indikasi hoaks atau fakta. Biar kamu nggak buru-buru emosi terus nge-share info yang salah." },
@@ -125,7 +125,7 @@ function FAQ() {
   );
 }
 
-// KOMPONEN FOOTER (sama)
+// KOMPONEN FOOTER
 function Footer() {
   return (
     <footer className="footer">
@@ -143,7 +143,7 @@ function Footer() {
   );
 }
 
-// MAIN DASHBOARD COMPONENT (DIUBAH)
+// MAIN DASHBOARD COMPONENT
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('tautan');
   const [urlInput, setUrlInput] = useState('');
@@ -162,13 +162,13 @@ export default function Dashboard() {
       let initialResponse;
       
       if (activeTab === 'tautan') {
-        // Validasi URL tidak boleh kosong
+        // Validasi URL
         if (!urlInput) {
           throw new Error('URL tidak boleh kosong');
         }
         initialResponse = await verifyUrlApi(urlInput);
       } else {
-        // Validasi isi berita tidak boleh kosong
+        // Validasi isi berita
         if (!isiBerita) {
           throw new Error('Isi berita tidak boleh kosong');
         }

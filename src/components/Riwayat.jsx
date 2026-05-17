@@ -72,26 +72,21 @@ function formatConfidence(score) {
   return Math.round(score * 100);
 }
 
-// Helper: Bersihkan teks dari marker aneh (> , *, dll)
+// Helper: Bersihkan teks dari marker aneh
 function cleanContent(text) {
   if (!text) return '';
   
   let cleaned = text;
   
-  // Hapus semua marker "> *", ">", "*" di awal baris (dengan atau tanpa spasi)
   cleaned = cleaned.replace(/^[>\*]\s*/gm, '');
   
-  // Hapus "Ringkasan Berita:" dan sejenisnya
   cleaned = cleaned.replace(/>\s*Ringkasan\s*Berita:\s*/gi, '');
   cleaned = cleaned.replace(/Ringkasan\s*Berita:\s*/gi, '');
   
-  // Hapus spasi berlebih di awal baris (tapi jangan hapus newline)
   cleaned = cleaned.replace(/^\s+/gm, '');
   
-  // Hapus multiple spaces menjadi single space (tapi jangan sentuh newline)
   cleaned = cleaned.replace(/[ ]{2,}/g, ' ');
   
-  // Trim awal dan akhir
   cleaned = cleaned.trim();
   
   return cleaned;

@@ -1,4 +1,3 @@
-// src/api/cekcokApi.js
 const BASE_URL = 'https://cekcok-backend.vercel.app';
 
 // Helper untuk fetch dengan error handling
@@ -67,7 +66,6 @@ export async function getRiwayat({ page = 1, limit = 10, search = '', label = ''
   params.append('limit', limit);
   if (search) params.append('search', search);
   if (label && label !== 'SEMUA') {
-    // Konversi label frontend ke backend: 'FAKTA' -> 'valid', 'HOAKS' -> 'hoax'
     const backendLabel = label === 'FAKTA' ? 'valid' : 'hoax';
     params.append('label', backendLabel);
   }
