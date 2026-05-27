@@ -6,11 +6,11 @@ import { verifyTextApi, verifyUrlApi, pollCheckResult, formatVerdict } from '../
 function Navbar() {
   return (
     <nav 
-      className="sticky top-0 z-50 bg-white"
+      className="sticky top-0 z-50 bg-white w-full"
       style={{ fontFamily: "'Fraunces', 'Times New Roman', serif" }}
     >
-      <div className="px-6 md:px-12 lg:px-16 py-4">
-        <div className="w-full flex justify-between items-center">
+      <div className="py-4">
+        <div className="w-full flex justify-between items-center px-6 md:px-12 lg:px-16">
           <div className="logo">
             <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">
               CEKCOK<span className="text-blue-500">.</span>
@@ -53,7 +53,8 @@ function Navbar() {
               href="https://github.com/CekCok-Capstonus" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-block px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all duration-200"
+              className="inline-block px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 transition-all duration-200 hover:bg-black hover:text-white hover:border-black"
+              style={{ borderRadius: '0px' }}
             >
               GITHUB
             </a>
@@ -326,28 +327,28 @@ function FAQ() {
 function Footer() {
   return (
     <footer 
-      className="py-12 mt-12" 
+      className="py-12 mt-0" 
       style={{ 
         backgroundColor: '#fff3f3',
         fontFamily: "'Fraunces', 'Times New Roman', serif"
       }}
     >
       <div className="px-6 md:px-12 lg:px-16">
-        <div className="flex justify-between items-start mb-4 px-20 mx-20">
-          <h3 className="text-3xl font-black tracking-tight text-gray-900">
+        <div className="px-20 mx-20">
+          <h3 className="text-3xl font-black tracking-tight text-gray-900 mb-4">
             CEKCOK.
           </h3>
-          <span className="text-gray-500 text-xs tracking-wide uppercase hover:text-gray-700 cursor-pointer transition font-medium">
-            TENTANG KAMI
-          </span>
-        </div>
-        
-        <p className="text-gray-600 italic text-sm mb-8 max-w-xl leading-relaxed ml-40">
-          "Çek dulu supaya cocok. Membangun ketahanan masyarakat terhadap misinformasi digital."
-        </p>
-        
-        <div className="w-full h-1 bg-gray-400 mb-8"></div>
-        
+          
+          <div className="flex justify-between items-center">
+            <p className="text-gray-600 italic text-sm mb-4 leading-relaxed" style={{ fontFamily: "'Fraunces', serif" }}>
+              "Çek dulu supaya cocok. Membangun ketahanan masyarakat terhadap misinformasi digital."
+            </p>
+            <span className="text-gray-500 text-xs tracking-wide uppercase hover:text-gray-700 cursor-pointer transition font-medium">
+              TENTANG KAMI
+            </span>
+          </div>
+        </div>    
+        <div className="h-0.5 bg-gray-400 mb-8 w-4/5 mx-auto"></div>
         <div className="flex justify-center items-center gap-8 mb-8">
           <div className="flex justify-center">
             <img 

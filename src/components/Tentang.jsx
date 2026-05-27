@@ -3,54 +3,63 @@ import { NavLink } from 'react-router-dom';
 // KOMPONEN NAVBAR
 function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 px-6 md:px-12 lg:px-16 py-4">
-      <div className="w-full flex justify-between items-center">
-        <div className="logo">
-          <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">CEKCOK.</h2>
-        </div>
-        <div className="nav-links flex gap-6">
-          <NavLink 
-            to="/" 
-            className={({ isActive }) => 
-              isActive 
-                ? 'text-primary-600 font-semibold border-b-2 border-primary-600 pb-1' 
-                : 'text-gray-600 hover:text-primary-600 transition-colors'
-            }
-          >
-            BERANDA
-          </NavLink>
-          <NavLink 
-            to="/riwayat" 
-            className={({ isActive }) => 
-              isActive 
-                ? 'text-primary-600 font-semibold border-b-2 border-primary-600 pb-1' 
-                : 'text-gray-600 hover:text-primary-600 transition-colors'
-            }
-          >
-            RIWAYAT
-          </NavLink>
-          <NavLink 
-            to="/tentang" 
-            className={({ isActive }) => 
-              isActive 
-                ? 'text-primary-600 font-semibold border-b-2 border-primary-600 pb-1' 
-                : 'text-gray-600 hover:text-primary-600 transition-colors'
-            }
-          >
-            TENTANG PROJEK
-          </NavLink>
-        </div>
-        <div className="github-badge">
-          <a 
-            href="https://github.com/CekCok-Capstonus" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-gray-500 hover:text-primary-600 text-sm font-medium transition-colors"
-          >
-            GITHUB
-          </a>
+    <nav 
+      className="sticky top-0 z-50 bg-white w-full"
+      style={{ fontFamily: "'Fraunces', 'Times New Roman', serif" }}
+    >
+      <div className="py-4">
+        <div className="w-full flex justify-between items-center px-6 md:px-12 lg:px-16">
+          <div className="logo">
+            <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">
+              CEKCOK<span className="text-blue-500">.</span>
+            </h2>
+          </div>
+          <div className="nav-links flex gap-6">
+            <NavLink 
+              to="/" 
+              className={({ isActive }) => 
+                isActive 
+                  ? 'text-blue-500 font-semibold border-b-2 border-blue-500 pb-1' 
+                  : 'text-gray-600 hover:text-blue-500 transition-colors duration-200'
+              }
+            >
+              BERANDA
+            </NavLink>
+            <NavLink 
+              to="/riwayat" 
+              className={({ isActive }) => 
+                isActive 
+                  ? 'text-blue-500 font-semibold border-b-2 border-blue-500 pb-1' 
+                  : 'text-gray-600 hover:text-blue-500 transition-colors duration-200'
+              }
+            >
+              RIWAYAT
+            </NavLink>
+            <NavLink 
+              to="/tentang" 
+              className={({ isActive }) => 
+                isActive 
+                  ? 'text-blue-500 font-semibold border-b-2 border-blue-500 pb-1' 
+                  : 'text-gray-600 hover:text-blue-500 transition-colors duration-200'
+              }
+            >
+              TENTANG PROJEK
+            </NavLink>
+          </div>
+          <div className="github-badge">
+            <a 
+              href="https://github.com/CekCok-Capstonus" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-block px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 transition-all duration-200 hover:bg-black hover:text-white hover:border-black"
+              style={{ borderRadius: '0px' }}
+            >
+              GITHUB
+            </a>
+          </div>
         </div>
       </div>
+      <div className="w-full h-0.5 bg-gray-800"></div>
     </nav>
   );
 }
@@ -58,38 +67,50 @@ function Navbar() {
 // KOMPONEN FOOTER
 function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-200 py-12 mt-12">
+    <footer 
+      className="py-12 mt-0" 
+      style={{ 
+        backgroundColor: '#fff3f3',
+        fontFamily: "'Fraunces', 'Times New Roman', serif"
+      }}
+    >
       <div className="px-6 md:px-12 lg:px-16">
-        <div className="text-center">
-          {/* Title dengan gaya tebal dan track spacing seperti gambar */}
-          <h3 className="text-3xl font-black tracking-tighter text-gray-900 mb-4">
+        <div className="px-20 mx-20">
+          <h3 className="text-3xl font-black tracking-tight text-gray-900 mb-4">
             CEKCOK.
           </h3>
           
-          {/* Kutipan dengan italic seperti pada gambar */}
-          <p className="text-gray-500 italic text-sm mb-6 max-w-2xl mx-auto leading-relaxed">
-            "Çek dulu supaya cocok. Membangun ketahanan masyarakat terhadap misinformasi digital."
-          </p>
-          
-          {/* Divider line tipis seperti pada gambar */}
-          <div className="w-12 h-px bg-gray-300 mx-auto mb-6"></div>
-          
-          {/* Menu links sesuai gambar */}
-          <div className="flex justify-center gap-10 mb-6">
-            <span className="text-gray-400 text-xs tracking-wide uppercase hover:text-gray-600 cursor-pointer transition">
+          <div className="flex justify-between items-center">
+            <p className="text-gray-600 italic text-sm mb-4 leading-relaxed" style={{ fontFamily: "'Fraunces', serif" }}>
+              "Çek dulu supaya cocok. Membangun ketahanan masyarakat terhadap misinformasi digital."
+            </p>
+            <span className="text-gray-500 text-xs tracking-wide uppercase hover:text-gray-700 cursor-pointer transition font-medium">
               TENTANG KAMI
             </span>
           </div>
-          
-          {/* Credits dengan format seperti gambar: dicoding & Coding Camp 2026 satu baris */}
-          <div className="text-gray-400 text-[11px] tracking-wide space-y-1">
-            <p>
-              dicoding <span className="mx-1">•</span> CODING CAMP 2026 <span className="mx-1">•</span> DBS FOUNDATION <span className="mx-1">•</span> READY TO FUTURE WORKFORCE
-            </p>
-            <p className="mt-3">
-              © 2026 ÇekCok by Capstomus. Distributed by DBS Foundation & Dicoding.
-            </p>
+        </div>    
+        <div className="h-0.5 bg-gray-400 mb-8 w-4/5 mx-auto"></div>
+        <div className="flex justify-center items-center gap-8 mb-8">
+          <div className="flex justify-center">
+            <img 
+              src="/images/dicoding.png"
+              alt="Dicoding"
+              className="h-10 md:h-12 w-auto object-contain"
+            />
           </div>
+          <div className="flex justify-center">
+            <img 
+              src="/images/codingCamp.png"
+              alt="DBS Foundation"
+              className="h-10 md:h-12 w-auto object-contain"
+            />
+          </div>
+        </div>
+        
+        <div className="text-center text-gray-500 text-sm tracking-wide">
+          <p>
+            © 2026 ÇekCok by Capstomus. Distributed by DBS Foundation & Dicoding.
+          </p>
         </div>
       </div>
     </footer>

@@ -2,15 +2,14 @@ import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { getRiwayat, getAnalyticsSummary, getCheckDetail } from '../api/cekcokApi.js';
 
-// KOMPONEN NAVBAR
 function Navbar() {
   return (
     <nav 
-      className="sticky top-0 z-50 bg-white"
+      className="sticky top-0 z-50 bg-white w-full"
       style={{ fontFamily: "'Fraunces', 'Times New Roman', serif" }}
     >
-      <div className="px-6 md:px-12 lg:px-16 py-4">
-        <div className="w-full flex justify-between items-center">
+      <div className="py-4">
+        <div className="w-full flex justify-between items-center px-6 md:px-12 lg:px-16">
           <div className="logo">
             <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">
               CEKCOK<span className="text-blue-500">.</span>
@@ -53,7 +52,8 @@ function Navbar() {
               href="https://github.com/CekCok-Capstonus" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-block px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-blue-500 hover:text-white hover:border-black-500 transition-all duration-200"
+              className="inline-block px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 transition-all duration-200 hover:bg-black hover:text-white hover:border-black"
+              style={{ borderRadius: '0px' }}
             >
               GITHUB
             </a>
@@ -65,32 +65,31 @@ function Navbar() {
   );
 }
 
-// KOMPONEN FOOTER
 function Footer() {
   return (
     <footer 
-      className="py-12 mt-12" 
+      className="py-12 mt-0" 
       style={{ 
         backgroundColor: '#fff3f3',
         fontFamily: "'Fraunces', 'Times New Roman', serif"
       }}
     >
       <div className="px-6 md:px-12 lg:px-16">
-        <div className="flex justify-between items-start mb-4 px-20 mx-20">
-          <h3 className="text-3xl font-black tracking-tight text-gray-900">
+        <div className="px-20 mx-20">
+          <h3 className="text-3xl font-black tracking-tight text-gray-900 mb-4">
             CEKCOK.
           </h3>
-          <span className="text-gray-500 text-xs tracking-wide uppercase hover:text-gray-700 cursor-pointer transition font-medium">
-            TENTANG KAMI
-          </span>
-        </div>
-        
-        <p className="text-gray-600 italic text-sm mb-8 max-w-xl leading-relaxed ml-40">
-          "Çek dulu supaya cocok. Membangun ketahanan masyarakat terhadap misinformasi digital."
-        </p>
-        
-        <div className="w-full h-1 bg-gray-400 mb-8"></div>
-        
+          
+          <div className="flex justify-between items-center">
+            <p className="text-gray-600 italic text-sm mb-4 leading-relaxed" style={{ fontFamily: "'Fraunces', serif" }}>
+              "Çek dulu supaya cocok. Membangun ketahanan masyarakat terhadap misinformasi digital."
+            </p>
+            <span className="text-gray-500 text-xs tracking-wide uppercase hover:text-gray-700 cursor-pointer transition font-medium">
+              TENTANG KAMI
+            </span>
+          </div>
+        </div>    
+        <div className="h-0.5 bg-gray-400 mb-8 w-4/5 mx-auto"></div>
         <div className="flex justify-center items-center gap-8 mb-8">
           <div className="flex justify-center">
             <img 
@@ -118,7 +117,6 @@ function Footer() {
   );
 }
 
-// Helper: format tanggal dari ISO ke format "DD MONTH YYYY"
 function formatTanggal(isoDate) {
   const date = new Date(isoDate);
   const days = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
@@ -128,7 +126,6 @@ function formatTanggal(isoDate) {
   return `${day} ${month} ${year}`;
 }
 
-// Helper: format tanggal lengkap dengan waktu
 function formatTanggalLengkap(isoDate) {
   const date = new Date(isoDate);
   const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -144,13 +141,11 @@ function formatTanggalLengkap(isoDate) {
   return `${dayName}, ${day} ${month} ${year} ${hours}:${minutes}`;
 }
 
-// Helper: format skor confidence (0-1 ke persen)
 function formatConfidence(score) {
   if (!score && score !== 0) return null;
   return Math.round(score * 100);
 }
 
-// Helper: Bersihkan teks dari marker aneh
 function cleanContent(text) {
   if (!text) return '';
   
@@ -176,12 +171,10 @@ export default function Riwayat() {
   const [summary, setSummary] = useState({ total_checks: 0, total_hoax: 0 });
   const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0, total_pages: 1 });
   
-  // State untuk modal
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDetailLoading, setIsDetailLoading] = useState(false);
 
-  // Ambil data riwayat dari backend
   const fetchRiwayat = async (page = 1) => {
     setIsLoading(true);
     setError(null);
@@ -209,7 +202,6 @@ export default function Riwayat() {
     }
   };
 
-  // Ambil ringkasan statistik
   const fetchSummary = async () => {
     try {
       const response = await getAnalyticsSummary();
@@ -222,7 +214,6 @@ export default function Riwayat() {
     }
   };
 
-  // Ambil detail untuk modal
   const handleCardClick = async (id) => {
     setIsDetailLoading(true);
     setSelectedItem(null);
@@ -244,24 +235,20 @@ export default function Riwayat() {
     setSelectedItem(null);
   };
 
-  // Load data saat komponen mount, filter berubah, search berubah
   useEffect(() => {
     fetchRiwayat(1);
   }, [activeFilter, searchQuery]);
 
-  // Load summary sekali saat mount
   useEffect(() => {
     fetchSummary();
   }, []);
 
-  // Handle halaman berganti
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= pagination.total_pages && newPage !== currentPage) {
       fetchRiwayat(newPage);
     }
   };
 
-  // Generate nomor halaman yang ditampilkan
   const getPageNumbers = () => {
     const totalPages = pagination.total_pages;
     const current = currentPage;
@@ -294,29 +281,22 @@ export default function Riwayat() {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-
-      {/* MAIN - tanpa padding horizontal dan padding top agar background mentok */}
-      <main className="px-0 pt-0 pb-12 md:pb-16">
+      <main className="w-full pt-0 pb-0 md:pb-0">
         
-        {/* HEADER - Full width, mentok ke navbar dan pinggir layar */}
-        <div className="w-full" style={{ backgroundColor: '#fff3f3', paddingTop: '0', paddingBottom: '2rem', marginTop: '0', marginBottom: '0' }}>
-          {/* Container dalam untuk padding konten - ini yang memberikan jarak pada TEKS, bukan background */}
-          <div className="px-6 md:px-12 lg:px-16">
+        <div className="w-full" style={{ backgroundColor: 'rgba(252, 250, 247, 1)', paddingTop: '2rem', paddingBottom: '2rem', marginTop: '0', marginBottom: '0', borderBottom: '2px solid #0a0a0a' }}>
+          <div className="px-6 md:px-12 lg:px-16" style={{ paddingTop: '3rem', paddingBottom: '3rem' }}>
             <div className="flex flex-wrap items-start justify-between gap-6">
-              {/* Kiri: Teks */}
               <div className="flex-1 min-w-[200px]">
-                <h2 className="text-2xl font-semibold" style={{ fontFamily: "'Fraunces', serif", color: '#2d2d2d', marginBottom: '0.5rem' }}>
-                  Riwayat Analisis
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" style={{ fontFamily: "'Fraunces', serif", color: '#2d2d2d', marginBottom: '0.75rem' }}>
+                  Riwayat Analisis.
                 </h2>
-                <p style={{ fontFamily: "'Fraunces', serif", fontSize: '0.95rem', color: '#5e5e5e', margin: 0 }}>
-                  Telusuri kembali analisis yang telah diproses oleh mesin inferensi kami.
+                <p style={{ fontFamily: "'Fraunces', serif", fontSize: '1.1rem', color: '#000000', margin: 0, lineHeight: 1.5, fontStyle: 'italic' }}>
+                  Telusuri kembali analisis yang telah diproses oleh mesin <br />
+                  inferensi kami.
                 </p>
               </div>
-
-              {/* Kanan: Search bar */}
               <div className="flex-1 min-w-[260px] flex justify-end">
                 <div className="relative w-full max-w-md" style={{ position: 'relative' }}>
-                  {/* Bayangan hitam pekat grafiti - sudut siku */}
                   <div 
                     style={{
                       position: 'absolute',
@@ -332,7 +312,6 @@ export default function Riwayat() {
                   
                   <div className="relative" style={{ zIndex: 2 }}>
                     <div className="relative">
-                      {/* Ikon search background biru - kotak persegi */}
                       <div 
                         className="absolute left-0 top-0 bottom-0 flex items-center justify-center"
                         style={{
@@ -340,7 +319,16 @@ export default function Riwayat() {
                           width: '44px',
                         }}
                       >
-                        <span className="text-white text-lg">🔍</span>
+                        <svg 
+                          xmlns="http://www.w3.org/2000/svg" 
+                          fill="none" 
+                          viewBox="0 0 24 24" 
+                          strokeWidth={1.5} 
+                          stroke="currentColor" 
+                          style={{ width: '20px', height: '20px', color: '#ffffff' }}
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
                       </div>
                       
                       <input
@@ -349,11 +337,11 @@ export default function Riwayat() {
                         style={{
                           fontFamily: "'Fraunces', serif",
                           backgroundColor: 'white',
-                          border: '1px solid #e2dcdc',
+                          border: '2px solid #0a0a0a',
                           borderRadius: '0px',
-                          paddingTop: '0.75rem',
-                          paddingBottom: '0.75rem',
-                          paddingLeft: '56px',
+                          paddingTop: '0.85rem',
+                          paddingBottom: '0.85rem',
+                          paddingLeft: '52px',
                           paddingRight: '2.5rem',
                           width: '100%',
                         }}
@@ -377,63 +365,78 @@ export default function Riwayat() {
           </div>
         </div>
 
-        {/* KONTEN LAINNYA - tetap dalam container dengan padding */}
-        <div className="px-6 md:px-12 lg:px-16">
-          {/* FILTER TABS */}
-          <div className="flex justify-center mb-8">
-            <div className="flex gap-2 bg-gray-100 p-1 rounded-full">
+        <div className="w-full border-t-2 border-b-4 border-black bg-white">
+          <div className="flex flex-wrap items-center justify-between py-8 px-6 md:px-12 lg:px-16 gap-4">
+            <div className="flex gap-3">
               <button
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`px-6 py-2 text-sm font-medium transition-all duration-200 border border-black ${
                   activeFilter === 'SEMUA' 
-                    ? 'bg-primary-600 text-white shadow-sm' 
-                    : 'text-gray-600 hover:bg-gray-200'
+                    ? 'bg-black text-white' 
+                    : 'bg-white text-black hover:bg-gray-100'
                 }`}
+                style={{ borderRadius: '0px' }}
                 onClick={() => setActiveFilter('SEMUA')}
               >
                 SEMUA
               </button>
+              
               <button
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`px-6 py-2 text-sm font-medium transition-all duration-200 border border-black ${
                   activeFilter === 'FAKTA' 
-                    ? 'bg-primary-600 text-white shadow-sm' 
-                    : 'text-gray-600 hover:bg-gray-200'
+                    ? 'bg-black text-white' 
+                    : 'bg-white text-black hover:bg-gray-100'
                 }`}
+                style={{ borderRadius: '0px' }}
                 onClick={() => setActiveFilter('FAKTA')}
               >
                 FAKTA
               </button>
+              
               <button
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`px-6 py-2 text-sm font-medium transition-all duration-200 border border-black ${
                   activeFilter === 'HOAKS' 
-                    ? 'bg-primary-600 text-white shadow-sm' 
-                    : 'text-gray-600 hover:bg-gray-200'
+                    ? 'bg-black text-white' 
+                    : 'bg-white text-black hover:bg-gray-100'
                 }`}
+                style={{ borderRadius: '0px' }}
                 onClick={() => setActiveFilter('HOAKS')}
               >
                 HOAKS
               </button>
             </div>
-          </div>
-
-          {/* STATISTIK CARD - Full width */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 max-w-2xl mx-auto">
-            <div className="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100">
-              <span className="text-3xl font-extrabold text-primary-600">{summary.total_checks.toLocaleString('id-ID')} ANALISA</span>
+            
+            <div className="flex gap-6 md:gap-8">
+              <div className="flex items-center gap-2">
+                <div 
+                  className="w-4 h-4 rounded-full"
+                  style={{ backgroundColor: '#3b82f6' }}
+                ></div>
+                <span className="text-sm md:text-base text-gray-400" style={{ fontFamily: " serif" }}>
+                  {summary.total_checks.toLocaleString('id-ID')} ANALISA
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <div 
+                  className="w-4 h-4 rounded-full"
+                  style={{ backgroundColor: '#dc2626' }}
+                ></div>
+                <span className="text-sm md:text-base text-gray-400" style={{ fontFamily: " serif" }}>
+                  {summary.total_hoax.toLocaleString('id-ID')} HOAKS
+                </span>
+              </div>
             </div>
-            <div className="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100">
-              <span className="text-3xl font-extrabold text-red-500">{summary.total_hoax.toLocaleString('id-ID')} HOAKS</span>
-            </div>
           </div>
+        </div>
 
-          {/* HASIL PENCARIAN */}
+        <div className="px-6 md:px-12 lg:px-16 pt-20" style={{background :'rgba(252, 250, 247, 1)'}}>
           {searchQuery && !isLoading && (
             <div className="text-center text-gray-500 text-sm mb-6">
-              Menampilkan hasil untuk: <strong className="text-gray-700">"{searchQuery}"</strong>
+              Menampilkan hasil untuk: <strong className="text-gray-900">"{searchQuery}"</strong>
               {riwayatData.length === 0 && " - Tidak ditemukan"}
             </div>
           )}
 
-          {/* ERROR MESSAGE */}
           {error && (
             <div className="max-w-md mx-auto bg-red-50 border border-red-200 rounded-xl p-6 text-center">
               <p className="text-red-600 mb-3">⚠️ {error}</p>
@@ -446,7 +449,6 @@ export default function Riwayat() {
             </div>
           )}
 
-          {/* LOADING STATE */}
           {isLoading && (
             <div className="text-center py-12">
               <div className="inline-flex items-center gap-2 text-gray-500">
@@ -459,9 +461,8 @@ export default function Riwayat() {
             </div>
           )}
 
-          {/* DAFTAR RIWAYAT - Grid layout full width */}
           {!isLoading && !error && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            <div className="flex flex-col gap-14">
               {riwayatData.length > 0 ? (
                 riwayatData.map((item) => {
                   const jenis = item.label === 'hoax' ? 'HOAKS' : (item.label === 'valid' ? 'FAKTA' : 'PROSES');
@@ -470,95 +471,176 @@ export default function Riwayat() {
                   const tanggal = formatTanggal(item.created_at);
                   const cleanedContent = cleanContent(item.content);
                   
+                  const isHoax = jenis === 'HOAKS';
+                  const bgColor = isHoax ? '#dc2626' : '#16a34a';
+                  const scoreColor = isHoax ? '#dc2626' : '#16a34a';
+                  
                   return (
                     <div 
                       key={item.id} 
-                      className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all cursor-pointer"
-                      onClick={() => handleCardClick(item.id)}
+                      className="relative bg-white border-2 border-black max-w-7xl mx-auto w-full"
+                      style={{ borderRadius: '0px', boxShadow: '6px 6px 0px 0px #0a0a0a' }}
                     >
-                      <div className="flex flex-wrap justify-between items-center gap-2 mb-3">
-                        <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                          jenis === 'HOAKS' 
-                            ? 'bg-red-100 text-red-600' 
-                            : jenis === 'FAKTA' 
-                              ? 'bg-green-100 text-green-600' 
-                              : 'bg-yellow-100 text-yellow-600'
-                        }`}>
-                          {jenis}
-                        </span>
-                        <span className="text-gray-400 text-xs">{tanggal}</span>
-                        {skor && (
-                          <span className="text-primary-600 text-xs font-bold">{skor}%</span>
-                        )}
-                      </div>
-                      <div className="text-gray-400 text-xs mb-2">{tipe}</div>
-                      <h3 className="text-gray-800 text-sm leading-relaxed line-clamp-3 mb-3">
-                        {cleanedContent.substring(0, 200)}...
-                      </h3>
-                      <div className="text-primary-600 text-xs font-medium mt-2">
-                        Klik untuk detail lengkap →
+                      <div className="p-2 flex flex-col justify-center relative" style={{ paddingLeft: '48px', minHeight: '250px' }}>
+                        <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-x-6 gap-y-2">
+                          <div className="md:row-start-1 md:col-start-1">
+                            <div className="flex items-center gap-3">
+                              <div 
+                                className="px-4 py-1.5 text-sm font-bold text-white inline-block"
+                                style={{ 
+                                  backgroundColor: bgColor,
+                                  borderRadius: '0px'
+                                }}
+                              >
+                                {jenis}
+                              </div>
+                              <span className="text-gray-400 text-sm" style={{ fontFamily: "'Fraunces', serif" }}>
+                                {tanggal}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <div className="md:row-start-1 md:col-start-2">
+                            <div className="flex items-center gap-2">
+                              {tipe === 'TAUTAN BERITA' ? (
+                                <svg 
+                                  xmlns="http://www.w3.org/2000/svg" 
+                                  fill="none" 
+                                  viewBox="0 0 24 24" 
+                                  strokeWidth={1.5} 
+                                  stroke="currentColor" 
+                                  style={{ width: '16px', height: '16px', color: '#000000' }}
+                                >
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                                </svg>
+                              ) : (
+                                <svg 
+                                  xmlns="http://www.w3.org/2000/svg" 
+                                  fill="none" 
+                                  viewBox="0 0 24 24" 
+                                  strokeWidth={1.5} 
+                                  stroke="currentColor" 
+                                  style={{ width: '16px', height: '16px', color: '#000000' }}
+                                >
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                </svg>
+                              )}
+                              <p className="text-black text-xs" style={{ fontFamily: "'Fraunces', serif", fontWeight: 500 }}>
+                                {tipe}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <div className="md:row-start-2 md:col-start-1">
+                            <div 
+                              className="p-3"
+                              style={{ 
+                                backgroundColor: 'rgba(252, 250, 247, 1)',
+                                border: '1px solid #e5e5e5',
+                                borderRadius: '0px',
+                                minWidth: '200px'
+                              }}
+                            >
+                              <p className="text-xs text-gray-500 mb-1" style={{ fontFamily: "'Fraunces', serif" }}>SKOR KEYAKINAN</p>
+                              <p className="text-2xl font-bold" style={{ fontFamily: "'Fraunces', serif", color: scoreColor }}>
+                                {skor ? `${skor}%` : '0%'}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <div className="md:row-start-2 md:col-start-2">
+                            <p className="text-gray-800 text-base leading-relaxed font-bold" style={{ fontFamily: "'Fraunces', serif", fontWeight: 700 }}>
+                              {cleanedContent.length > 300 ? `${cleanedContent.substring(0, 300)}...` : cleanedContent}
+                            </p>
+                          </div>
+                          
+                        </div>
+                        
+                        <div className="absolute bottom-4 right-4">
+                          <button 
+                            className="p-2 hover:opacity-80 transition-all"
+                            style={{ 
+                              backgroundColor: '#0a0a0a',
+                              borderRadius: '0px'
+                            }}
+                            onClick={() => handleCardClick(item.id)}
+                          >
+                            <svg 
+                              xmlns="http://www.w3.org/2000/svg" 
+                              fill="none" 
+                              viewBox="0 0 24 24" 
+                              strokeWidth={2} 
+                              stroke="white" 
+                              style={{ width: '20px', height: '20px' }}
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   );
                 })
               ) : (
-                <div className="col-span-full text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-gray-500">
                   <p>Tidak ada hasil yang ditemukan{searchQuery ? ` untuk "${searchQuery}"` : ''}</p>
                 </div>
               )}
             </div>
           )}
 
-          {/* PAGINATION */}
           {!isLoading && !error && pagination.total_pages > 1 && (
-            <div className="flex flex-col items-center gap-4 mt-8">
-              <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex justify-center pt-14 pb-14">
+              <div 
+                className="flex items-center bg-white border-2 border-black"
+                style={{ borderRadius: '0px', boxShadow: '6px 6px 0px 0px #0a0a0a' }}
+              >
                 <button
-                  className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-5 py-3 bg-white flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ borderRadius: '0px' }}
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
                 >
-                  &laquo; Sebelumnya
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: '22px', height: '22px' }}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                  </svg>
                 </button>
                 
-                <div className="flex gap-1">
-                  {getPageNumbers().map((page, index) => (
-                    <button
-                      key={index}
-                      className={`w-10 h-10 rounded-lg text-sm font-medium transition-all ${
-                        page === currentPage 
-                          ? 'bg-primary-600 text-white' 
-                          : page === '...' 
-                            ? 'bg-transparent cursor-default text-gray-400' 
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                      onClick={() => typeof page === 'number' && handlePageChange(page)}
-                      disabled={page === '...'}
-                    >
-                      {page}
-                    </button>
-                  ))}
+                <div className="w-px h-10 bg-black"></div>
+                
+                <div 
+                  className="px-8 py-3 bg-white text-base md:text-lg font-medium"
+                  style={{ fontFamily: "'Fraunces', serif", borderRadius: '0px' }}
+                >
+                  Halaman {currentPage} / {pagination.total_pages}
                 </div>
                 
+                <div className="w-px h-10 bg-black"></div>
+                
                 <button
-                  className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-5 py-3 bg-white flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ borderRadius: '0px' }}
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === pagination.total_pages}
                 >
-                  Selanjutnya &raquo;
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" style={{ width: '22px', height: '22px' }}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
                 </button>
-              </div>
-              <div className="text-gray-400 text-sm">
-                Menampilkan {(currentPage - 1) * pagination.limit + 1} - {Math.min(currentPage * pagination.limit, pagination.total)} dari {pagination.total} data
               </div>
             </div>
           )}
+          {!isLoading && !error && pagination.total_pages <= 1 && riwayatData.length > 0 && (
+            <div className="pb-14"></div>
+          )}
+          
+
         </div>
       </main>
+      <div className="w-full border-t-2 border-black"></div>
 
       <Footer />
 
-      {/* MODAL DETAIL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={closeModal}>
           <div className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
