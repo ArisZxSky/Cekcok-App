@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { verifyTextApi, verifyUrlApi, pollCheckResult, formatVerdict } from '../api/cekcokApi.js';
 
-// KOMPONEN NAVBAR
 function Navbar() {
   return (
     <nav 
@@ -16,7 +15,8 @@ function Navbar() {
               CEKCOK<span className="text-blue-500">.</span>
             </h2>
           </div>
-          <div className="nav-links flex gap-6">
+          <div className="nav-links flex gap-6 font-bold"
+          style={{ fontFamily: "'Public Sans', sans-serif"}}>
             <NavLink 
               to="/" 
               className={({ isActive }) => 
@@ -66,7 +66,6 @@ function Navbar() {
   );
 }
 
-// KOMPONEN LAPORAN TERBARU
 function LaporanTerbaru() {
   const laporanData = [
     { confidence: 98, type: 'INPUT TEKS', content: '"Vaksin COVID-19 Memicu Mpox Karena Kandungan Virus Verocell."', time: '5m', verdict: 'HOAKS' },
@@ -188,7 +187,6 @@ function LaporanTerbaru() {
   );
 }
 
-// KOMPONEN METODOLOGI
 function Metodologi() {
   const steps = [
     { num: '01', title: 'Pengumpulan Data', desc: 'Kami mengambil data dari url atau uplikan yang Anda masukkan lalu menyiapkannya untuk dianalisis lebih dalam.' },
@@ -197,7 +195,8 @@ function Metodologi() {
   ];
 
   return (
-    <div className="w-full">
+    <div className="w-full"
+    style={{ fontFamily: "'Fraunces', serif"}}>
       <div className="bg-black py-24 px-6 md:px-12 lg:px-16 w-full">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-6xl font-bold text-center text-white mb-12" style={{ fontFamily: "'Fraunces', serif" }}>
@@ -210,8 +209,8 @@ function Metodologi() {
                 <div className="bg-blue-600 w-14 h-14 md:w-16 md:h-16 flex items-center justify-center mb-4">
                   <span className="text-white font-bold text-xl md:text-2xl">{step.num}</span>
                 </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-2">{step.title}</h3>
-                <p className="text-gray-600 text-sm md:text-base leading-relaxed flex-grow">{step.desc}</p>
+                <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-2 ">{step.title}</h3>
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed flex-grow italic">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -224,7 +223,7 @@ function Metodologi() {
               <div className="text-7xl md:text-8xl font-bold text-black-600" style={{ fontFamily: "'Fraunces', serif" }}>
                 25K+
               </div>
-              <div className="text-gray-500 text-sm mt-2" style={{ fontFamily: "'Fraunces', serif" }}>
+              <div className="text-gray-500 text-sm mt-2" style={{ fontFamily: "'Public Sans', Sans-serif" }}>
                 Total Verifikasi
               </div>
             </div>
@@ -232,7 +231,7 @@ function Metodologi() {
               <div className="text-7xl md:text-8xl font-bold text-blue-600" style={{ fontFamily: "'Fraunces', serif" }}>
                 45K
               </div>
-              <div className="text-gray-500 text-sm mt-2" style={{ fontFamily: "'Fraunces', serif" }}>
+              <div className="text-gray-500 text-sm mt-2" style={{ fontFamily: "'Public sans', Sans-serif" }}>
                 Hoaks Terungkap
               </div>  
             </div>
@@ -240,7 +239,7 @@ function Metodologi() {
               <div className="text-7xl md:text-8xl font-bold text-black-600" style={{ fontFamily: "'Fraunces', serif" }}>
                 125K+
               </div>
-              <div className="text-gray-500 text-sm mt-2" style={{ fontFamily: "'Fraunces', serif" }}>
+              <div className="text-gray-500 text-sm mt-2" style={{ fontFamily: "'Public Sans', Sans-serif" }}>
                 Total Dataset
               </div>
             </div>
@@ -251,7 +250,6 @@ function Metodologi() {
   );
 }
 
-// KOMPONEN MANIFESTO
 function Manifesto() {
   return (
     <section className="mb-12 px-6 md:px-12 lg:px-16">
@@ -280,7 +278,6 @@ function Manifesto() {
   );
 }
 
-// KOMPONEN FAQ
 function FAQ() {
   const faqs = [
     { q: "CekCok ini sebenarnya aplikasi apa sih?", a: "Singkatnya, ini asisten digital buat bantu kamu ngecek apakah sebuah teks berita atau artikel itu punya indikasi hoaks atau fakta. Biar kamu nggak buru-buru emosi terus nge-share info yang salah." },
@@ -307,11 +304,12 @@ function FAQ() {
               <div className="bg-white border-2 border-black rounded-none p-5" style={{ boxShadow: '6px 6px 0px 0px #000000' }}>
                 <div 
                   className="font-bold text-gray-900 text-lg md:text-xl mb-4 pb-2 border-b-2 border-black"
-                  style={{ fontFamily: "'Fraunces', serif" }}
+                  
                 >
                   {faq.q}
                 </div>
-                <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+                <p className="text-gray-700 text-base md:text-lg leading-relaxed"
+                style={{ fontFamily: "'Fraunces', serif" }}>
                   {faq.a}
                 </p>
               </div>
@@ -323,7 +321,6 @@ function FAQ() {
   );
 }
 
-// KOMPONEN FOOTER
 function Footer() {
   return (
     <footer 
@@ -376,7 +373,6 @@ function Footer() {
   );
 }
 
-// MAIN DASHBOARD COMPONENT
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('tautan');
   const [urlInput, setUrlInput] = useState('');
@@ -452,7 +448,6 @@ export default function Dashboard() {
           </h1>
         </section>
 
-        {/* VERIFIKASI SECTION */}
         <section className="mb-16 max-w-4xl mx-auto px-6 md:px-12 lg:px-16" style={{ fontFamily: "'Fraunces', serif" }}>
           <div className="border-4 border-black bg-white" style={{ borderRadius: '0px' }}>
             
