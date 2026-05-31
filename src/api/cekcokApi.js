@@ -1,6 +1,5 @@
 const BASE_URL = 'https://cekcok-backend.vercel.app';
 
-// Helper untuk fetch dengan error handling
 async function fetchApi(endpoint, options = {}) {
   const url = `${BASE_URL}${endpoint}`;
   const response = await fetch(url, {
@@ -20,7 +19,6 @@ async function fetchApi(endpoint, options = {}) {
   return data;
 }
 
-// POST /api/checks - Verifikasi teks
 export async function verifyTextApi(title, content) {
   return fetchApi('/api/checks', {
     method: 'POST',
@@ -28,7 +26,6 @@ export async function verifyTextApi(title, content) {
   });
 }
 
-// POST /api/checks/url - Verifikasi URL
 export async function verifyUrlApi(url) {
   return fetchApi('/api/checks/url', {
     method: 'POST',
@@ -36,13 +33,11 @@ export async function verifyUrlApi(url) {
   });
 }
 
-// GET /api/checks/:id - Ambil detail pengecekan (untuk polling)
 export async function getCheckDetail(id) {
   return fetchApi(`/api/checks/${id}`);
 }
 
-// Polling: cek status sampai success/fail
-export async function pollCheckResult(id, interval = 1500, maxAttempts = 20) {
+export async function pollCheckResult(id, interval = 2000, maxAttempts = 60) {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     const response = await getCheckDetail(id);
     const check = response.data;
@@ -59,7 +54,6 @@ export async function pollCheckResult(id, interval = 1500, maxAttempts = 20) {
   throw new Error('Waktu verifikasi habis. Silakan cek kembali di halaman Riwayat.');
 }
 
-// GET /api/checks - Ambil riwayat dengan filter & pagination
 export async function getRiwayat({ page = 1, limit = 10, search = '', label = '' }) {
   const params = new URLSearchParams();
   params.append('page', page);
@@ -73,12 +67,10 @@ export async function getRiwayat({ page = 1, limit = 10, search = '', label = ''
   return fetchApi(`/api/checks?${params.toString()}`);
 }
 
-// GET /api/analytics/summary - Ambil ringkasan statistik
 export async function getAnalyticsSummary() {
   return fetchApi('/api/analytics/summary');
 }
 
-// Helper: konversi label backend ke format frontend
 export function formatVerdict(label, confidenceScore) {
   if (label === 'hoax') {
     return {
