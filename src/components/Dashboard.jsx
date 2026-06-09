@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { verifyTextApi, verifyUrlApi, pollCheckResult, formatVerdict } from '../api/cekcokApi.js';
+import { verifyTextApi, verifyUrlApi, pollCheckResult, formatVerdict, getRiwayat } from '../api/cekcokApi.js';
 
 function Navbar() {
   return (
@@ -67,11 +67,125 @@ function Navbar() {
 }
 
 function LaporanTerbaru() {
-  const laporanData = [
-    { confidence: 98, type: 'INPUT TEKS', content: '"Vaksin COVID-19 Memicu Mpox Karena Kandungan Virus Verocell."', time: '5m', verdict: 'HOAKS' },
-    { confidence: 92, type: 'TAUTAN BERITA', content: 'Pemerintah Resmi Mengumumkan Kebijakan Baru Terkait Privasi Data Digital.', time: '1j', verdict: 'FAKTA' },
-    { confidence: 87, type: 'INPUT TEKS', content: '"Pesan berantai WhatsApp tentang hadiah gratis saldo digital dari bank BUMN adalah upaya phishing..."', time: 'KEMARIN', verdict: 'HOAKS' },
-  ];
+  const [laporanData, setLaporanData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const formatRelativeTime = (isoDate) => {
+    const now = new Date();
+    const date = new Date(isoDate);
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return 'Baru saja';
+    if (diffMins < 60) return `${diffMins}m`;
+    if (diffHours < 24) return `${diffHours}j`;
+    if (diffDays === 1) return 'Kemarin';
+    if (diffDays < 7) return `${diffDays} hari lalu`;
+    return date.toLocaleDateString('id-ID');
+  };
+
+  const cleanContent = (text) => {
+    if (!text) return '';
+    let cleaned = text;
+    cleaned = cleaned.replace(/^[>\*]\s*/gm, '');
+    cleaned = cleaned.replace(/>\s*Ringkasan\s*Berita:\s*/gi, '');
+    cleaned = cleaned.replace(/Ringkasan\s*Berita:\s*/gi, '');
+    cleaned = cleaned.replace(/^\s+/gm, '');
+    cleaned = cleaned.replace(/[ ]{2,}/g, ' ');
+    cleaned = cleaned.trim();
+    return cleaned;
+  };
+
+  const fetchLatestRiwayat = async () => {
+    setIsLoading(true);
+    try {
+      const response = await getRiwayat({
+        page: 1,
+        limit: 3,
+        search: '',
+        label: '',
+      });
+      
+      const formattedData = response.data.map((item) => {
+        const jenis = item.label === 'hoax' ? 'HOAKS' : (item.label === 'valid' ? 'FAKTA' : 'PROSES');
+        const skor = item.confidence_score ? Math.round(item.confidence_score * 100) : 0;
+        const tipe = item.input_type === 'text' ? 'INPUT TEKS' : 'TAUTAN BERITA';
+        const cleanedContent = cleanContent(item.content);
+        
+        return {
+          id: item.id,
+          confidence: skor,
+          type: tipe,
+          content: cleanedContent.length > 150 ? `${cleanedContent.substring(0, 150)}...` : cleanedContent,
+          time: formatRelativeTime(item.created_at),
+          verdict: jenis,
+          rawDate: item.created_at,
+        };
+      });
+      
+      setLaporanData(formattedData);
+    } catch (err) {
+      console.error('Gagal mengambil laporan terbaru:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLatestRiwayat();
+    const interval = setInterval(() => {
+      fetchLatestRiwayat();
+    }, 15000);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (isLoading && laporanData.length === 0) {
+    return (
+      <section 
+        className="w-full"
+        style={{ 
+          fontFamily: "'Fraunces', serif",
+          backgroundColor: '#fff3f3'
+        }}
+      >
+        <div className="py-16 md:py-16 w-full">
+          <div className="w-full px-6 md:px-12 lg:px-16">
+            <div className="flex justify-between items-center mb-3 w-full">
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined" style={{ color: '#2563eb', fontSize: '28px' }}>
+                  history
+                </span>
+                <h2 className="text-2xl font-bold text-black" style={{ fontFamily: "'Fraunces', serif", fontWeight: 700 }}>
+                  Laporan Terbaru
+                </h2>
+              </div>
+              <NavLink 
+                to="/riwayat" 
+                className="text-sm font-medium hover:underline"
+                style={{ fontFamily: "'Fraunces', serif", color: '#000' }}
+              >
+                Lihat Semua →
+              </NavLink>
+            </div>
+            <div className="border-b-2 border-black w-full"></div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full mt-8 px-6 md:px-12 lg:px-16">
+            {[1, 2, 3].map((_, idx) => (
+              <div key={idx} className="bg-white border-2 border-black relative flex flex-col w-full animate-pulse" style={{ borderRadius: '0px' }}>
+                <div className="p-6 pt-14">
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                  <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
+                  <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section 
@@ -105,7 +219,7 @@ function LaporanTerbaru() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full mt-8 px-6 md:px-12 lg:px-16">
           {laporanData.map((item, idx) => (
             <div 
-              key={idx} 
+              key={item.id || idx} 
               className="bg-white border-2 border-black relative flex flex-col w-full"
               style={{ borderRadius: '0px' }}
             >
